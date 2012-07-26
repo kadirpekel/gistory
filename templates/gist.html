@@ -1,109 +1,45 @@
-<!doctype html>  
-<html lang="en">
-	
-	<head>
-		<meta charset="utf-8">
-		
-		<title>{{ gist.description }}</title>
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <link href='https://fonts.googleapis.com/css?family=Chivo:900' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" type="text/css" href="static/stylesheets/stylesheet.css" media="screen" />
+    <link rel="stylesheet" type="text/css" href="static/stylesheets/pygment_trac.css" media="screen" />
+    <link rel="stylesheet" type="text/css" href="static/stylesheets/print.css" media="print" />
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <title>Gistory by {{ gist.user.login }}</title>
+  </head>
 
-		<meta name="description" content="{{ gist.description }}">
-		<meta name="author" content="{{ gist.user.login }}">
+  <body>
+    <div id="container">
+      <div class="inner">
 
-		<meta name="apple-mobile-web-app-capable" content="yes" />
-		<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
-		
-		<link href='http://fonts.googleapis.com/css?family=Lato:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
-		
-		<link rel="stylesheet" href="static/css/reset.css">
-		<link rel="stylesheet" href="static/css/main.css">
-		<link rel="stylesheet" href="static/css/print.css" type="text/css" media="print">
-
-		<link rel="stylesheet" href="static/lib/css/zenburn.css">
-	</head>
-	
-	<body>
-		
-		<div class="reveal">
-
-			<!-- Used to fade in a background when a specific slide state is reached -->
-			<div class="state-background"></div>
-			
-			<!-- Any section element inside of this container is displayed as a slide -->
-			<div class="slides">
-                <section>
-                    <h1>{{ gist.description }}</h1>
-                </section>
-                {% for version in gist.history %}
-                <section>
-                    {% for filename in version.gist.files %}
-                    <h3>{{ filename }}</h3>
-                    <pre><code>{{ version.gist.files[filename].content }}</code></pre>
-                    <small>{{ version.version }}</small>
-                    {% endfor %}
-                </section>
+        <header>
+          <h1>{{ gist.description }}</h1>
+          <h2>{{ gist.user.login }}</h2>
+        </header>
+        <section id="main_content">
+            {% for version in gist.history %}
+            <section>
+                <hr>
+                {% for filename in version.gist.files %}
+                <h4>{{ filename }} <small>({{ version.version }})</small> </h4>
+                <pre><code>{{ version.gist.files[filename].content }}</code></pre>
                 {% endfor %}
-			</div>
+            </section>
+            {% endfor %}
 
-			<!-- The navigational controls UI -->
-			<aside class="controls">
-				<a class="left" href="#">&#x25C4;</a>
-				<a class="right" href="#">&#x25BA;</a>
-				<a class="up" href="#">&#x25B2;</a>
-				<a class="down" href="#">&#x25BC;</a>
-			</aside>
+        </section>
 
-			<!-- Presentation progress bar -->
-			<div class="progress"><span></span></div>
-			
-		</div>
+        <footer>
+          Gistory is maintained by <a href="https://github.com/kadirpekel">kadirpekel</a><br>
+          Tactile theme by <a href="http://twitter.com/jasonlong">Jason Long</a>.
+        </footer>
 
-		<script src="static/lib/js/head.min.js"></script>
-
-		<script>
-			// Load reveal.js as well as a classList polyfill if needed
-			head.js( !document.body.classList ? 'static/lib/js/classList.js' : null )
-				.js( 'static/js/reveal.js', function() {
-
-				// Parse the query string into a key/value object
-				var query = {};
-				location.search.replace( /[A-Z0-9]+?=(\w*)/gi, function(a) {
-					query[ a.split( '=' ).shift() ] = a.split( '=' ).pop();
-				} );
-
-				// Fires when a slide with data-state=customevent is activated
-				Reveal.addEventListener( 'customevent', function() {
-					console.log( '"customevent" has fired' );
-				} );
-
-				// Fires each time a new slide is activated
-				Reveal.addEventListener( 'slidechanged', function( event ) {
-					// event.previousSlide, event.currentSlide, event.indexh, event.indexv
-				} );
-
-				// Full list of configuration options available here:
-				// https://github.com/hakimel/reveal.js#configuration
-				Reveal.initialize({
-					controls: true,
-					progress: true,
-					history: true,
-					
-					theme: query.theme || 'default', // default/neon/beige
-					transition: query.transition || 'default' // default/cube/page/concave/linear(2d)
-				});
-
-			} );
-			
-			// Load highlight.js for syntax highlighting of code samples
-			head.js( 'static/lib/js/highlight.js', function() { 
-				hljs.initHighlightingOnLoad(); 
-			} );
-
-			// If we're runnning the notes server we need to include some additional JS
-			// TODO Is there a better way to determine if we're running the notes server?
-			if( window.location.host === 'localhost:1947' ) {
-				head.js( 'socket.io/socket.io.js', 'plugin/speakernotes/client.js' );
-			}
-		</script>
-		
-	</body>
+      </div>
+    </div>
+  </body>
 </html>
