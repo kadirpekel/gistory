@@ -1,1 +1,5 @@
 <h1>{{ gist.description }}</h1>
+{% for filename in gist.files %}
+<h3>{{ filename }}</h3>
+<pre>{{ gist.files[filename].content }}</pre>
+{% endfor %}

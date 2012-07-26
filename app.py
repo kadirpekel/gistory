@@ -5,16 +5,15 @@ import os
 
 GITHUB_API_BASE_URL = "https://api.github.com"
 
-def query_api(query):
-    url = "%s%s" % (GITHUB_API_BASE_URL, query)
-    api = urllib.urlopen(url)
-    result = api.read()    
-    result_obj = json.loads(result)
-    api.close()
-    return result_obj
+def query_api(path, raw=False, base_url=GITHUB_API_BASE_URL):
+  url = "%s%s" % (base_url or '', path)
+  api = urllib.urlopen(url)
+  result = api.read()
+  api.close()
+  return raw and result or json.loads(result)
 
 def get_gist(gist_id):
-    return query_api("/gists/%s" % gist_id)
+  return query_api("/gists/%s" % gist_id)
 
 app = Flask(__name__)
 app.debug = True
